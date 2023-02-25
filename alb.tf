@@ -5,8 +5,8 @@ resource "aws_security_group" "loadbalancer" {
 
   ingress {
     description = "HTTP"
-    from_port   = 80
-    to_port     = 80
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -56,12 +56,12 @@ module "loadbalancer" {
     }
   ]
 
-  http_tcp_listeners = [
+  https_listeners = [
     {
-      port               = 80
-      protocol           = "HTTP"
-      action_type        = "forward"
+      port               = 443
+      protocol           = "HTTPS"
       target_group_index = 0
+      certificate_arn    = aws_acm_certificate.main.arn
     }
   ]
 }
